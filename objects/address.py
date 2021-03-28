@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-from city import City
+from objects.city import City
 
-class Adress(object):
+class Address(object):
     def __init__(self):
         super(MyClass, self).__init__()
         self.__city = City()

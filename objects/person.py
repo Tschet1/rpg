@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
+from __future__ import annotations
 from enum import Enum
-
+from .address import Address
+from my_system import create_charactersheet, all_items
+from .relation import Opinion, Relation
+from .item import Item
 
 class Gender(Enum):
     FEMALE = 1
@@ -79,32 +83,52 @@ class Profession(Enum):
     Töpfer = 50
     Zimmermädchen = 51
 
+    Animal = 52
+
 
 class Person(object):
-    def __init__(self):
+    def __init__(self,
+                 name: str,
+                 age: int,
+                 gender: Gender,
+                 address: Address,
+                 race: Race,
+                 height: int,
+                 languages: list,
+                 profession: Profession,
+                 sexorient: SexualOrientation):
+
         super(Person, self).__init__()
-        self.__name = 'John Doe'
-        self.__gender = "f"
-        self.__address = ""
-        self.__race = ""
-        self.__height = ""
-        self.__languages = ""
+        self.__name = name
+        self.__gender = gender
+        self.__address = address
+        self.__race = race
+        self.__height = height
+        self.__languages = languages
 
-        self.__profession = ""
+        self.__profession = profession
 
-        self.__father = ""
-        self.__mother = ""
-        self.__children = ""
-        self.__pets = ""
+        self.__father = None
+        self.__mother = None
+        self.__children = None
+        self.__pets = None
 
-        self.__relations = ""
+        self.__relations = []
 
-        self.__notes = ""
+        self.__notes = []
 
-        self.__stats = ""
-        self.__sexual_orientation = ""
+        self.__sheet = create_charactersheet()
+        self.__sexual_orientation = sexorient
 
-        self.__inventroy = ""
+        self.__inventroy = {}
+
+        # TODO: create getter/setters
+        self.__age = age
+        self.__is_alive = True
+
+        # TODO:
+        hp/mana usw.
+        attack, defense, weight of inventory
 
     @property
     def name(self):
@@ -134,29 +158,66 @@ class Person(object):
     def father(self):
         return self.__father
 
+    @father.setter
+    def father(self, father: Person):
+        self.__father = father
+
     @property
     def mother(self):
         return self.__mother
+
+    @mother.setter
+    def mother(self, mother: Person):
+        self.__mother = mother
 
     @property
     def children(self):
         return self.__children
 
+    def add_child(self, child: Person):
+        self.__children.append(child)
+
     @property
     def pets(self):
         return self.__pets
 
-    @property
-    def relations(self):
-        return self.__relations
+    def add_pet(self, animal: Person):
+        self.__children.append(animal)
+
+    def get_opinion(self, towards: Person):
+        opinion = [(opinion.effect, opinion.reason)
+            for opinion in self.__relations if opinion.towards == towards
+        ]
+        return (sum([op[0] for op in opinion]), opinion)
+
+    def get_family_opinion(self, towards: Person, relative_weight=0.5):
+        _, relations = self.get_opinion()
+
+        def _get_opinion(person: Person, towards: Person, rel_status: str, relations: list, relative_weight):
+            if person is not None:
+                _, t_relations = person.get_opinion(towards)
+                relations.extend([
+                    (effect * relative_weight, f"{person.name} ({rel_status}): {reason}") for effect, reason in t_relations
+                ])
+            return relations
+
+        relations = _get_opinion(self.father, towards, "Vater", relations, relative_weight)
+        relations = _get_opinion(self.mother, towards, "Mutter", relations, relative_weight)
+        for child in self.children:
+            relations = _get_opinion(child, towards, "Kind", relations, relative_weight)
+
+        #TODO: reflect what happens if someone doesn't like his/her parents or children
+        return (sum([op[0] for op in relations]), relations)
+
+    def add_opinion(self, towards: Person, effect: Opinion, reason: str):
+        self.__relations.append(Relation(towards, reason, effect))
 
     @property
     def notes(self):
         return self.__notes
 
-    @property
-    def stats(self):
-        return self.__stats
+    def add_note(self, note: str):
+        self.__notes.append(note)
 
     @property
     def sexual_orientation(self):
@@ -166,6 +227,17 @@ class Person(object):
     def languages(self):
         return self.__languages
 
+    def add_language(self, language: Language):
+        self.__notes.append(language)
+
     @property
     def inventroy(self):
+        # TODO: maybe format this
         return self.__inventroy
+
+    def add_to_inventory(self, item: Item):
+        self.__inventory.append(item)
+
+    def remove_from_inventory(self, item: Item):
+        self.__inventory.remove(item)
+        # TODO: implement __eq__ for item
