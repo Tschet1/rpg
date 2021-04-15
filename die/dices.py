@@ -2,17 +2,23 @@
 from random import randint
 from abc import ABC, abstractmethod
 
-
 class die(ABC):
     @classmethod
     @abstractmethod
     def die_sides(cls):
         ...
 
-    @classmethod
-    def roll(cls):
-        return randint(1, cls.die_sides())
+    def __mul__(self, other):
+        return int(self) * other
 
+    def __rmul__(self, other):
+        return int(self) * other
+
+    def __int__(self):
+        return randint(1, self.__class__().die_sides())
+
+    def __str__(self):
+        return f"d{self.__class__().die_sides()}"
 
 class d20(die):
     @classmethod
@@ -64,3 +70,16 @@ class d2(die):
     @classmethod
     def roll(cls):
         return super().roll() - 1
+
+    def __int__(self):
+        return randint(0, self.__class__().die_sides() - 1)
+
+
+D20 = d20()
+D12 = d12()
+D10 = d10()
+D8 = d8()
+D6 = d6()
+D4 = d4()
+D100 = d100()
+D2 = d2()
