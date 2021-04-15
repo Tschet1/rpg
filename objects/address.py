@@ -2,6 +2,7 @@
 
 from objects.city import City
 
+
 class Address(object):
     def __init__(self):
         super(MyClass, self).__init__()

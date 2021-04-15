@@ -2,6 +2,7 @@
 
 from charactersheet.sheet import Charactersheet
 
+
 def create_charactersheet():
     mapping = {
         "Stärke": [

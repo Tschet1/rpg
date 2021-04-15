@@ -33,7 +33,7 @@ class Server(threading.Thread):
 
 
 class Client(threading.Thread):
-    def connect(self, host,port):
+    def connect(self, host, port):
         self.sock.connect((host, port))
 
     def client(self, host, port, msg):
@@ -65,7 +65,7 @@ class Client(threading.Thread):
         return(1)
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     srv = Server()
     srv.daemon = True
     print("Starting server")

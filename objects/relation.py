@@ -3,6 +3,7 @@
 from enum import IntEnum
 from .person import Person
 
+
 class Opinion(IntEnum):
     ABNEIGUNG = -3
     NEGATIV = -2

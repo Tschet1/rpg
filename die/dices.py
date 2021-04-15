@@ -2,6 +2,7 @@
 from random import randint
 from abc import ABC, abstractmethod
 
+
 class die(ABC):
     @classmethod
     @abstractmethod
@@ -19,6 +20,7 @@ class die(ABC):
 
     def __str__(self):
         return f"d{self.__class__().die_sides()}"
+
 
 class d20(die):
     @classmethod

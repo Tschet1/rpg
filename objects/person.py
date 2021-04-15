@@ -6,6 +6,7 @@ from my_system import create_charactersheet, all_items
 from .relation import Opinion, Relation
 from .item import Item
 
+
 class Gender(Enum):
     FEMALE = 1
     MALE = 2
@@ -186,8 +187,8 @@ class Person(object):
 
     def get_opinion(self, towards: Person):
         opinion = [(opinion.effect, opinion.reason)
-            for opinion in self.__relations if opinion.towards == towards
-        ]
+                   for opinion in self.__relations if opinion.towards == towards
+                   ]
         return (sum([op[0] for op in opinion]), opinion)
 
     def get_family_opinion(self, towards: Person, relative_weight=0.5):
@@ -201,12 +202,15 @@ class Person(object):
                 ])
             return relations
 
-        relations = _get_opinion(self.father, towards, "Vater", relations, relative_weight)
-        relations = _get_opinion(self.mother, towards, "Mutter", relations, relative_weight)
+        relations = _get_opinion(self.father, towards,
+                                 "Vater", relations, relative_weight)
+        relations = _get_opinion(self.mother, towards,
+                                 "Mutter", relations, relative_weight)
         for child in self.children:
-            relations = _get_opinion(child, towards, "Kind", relations, relative_weight)
+            relations = _get_opinion(
+                child, towards, "Kind", relations, relative_weight)
 
-        #TODO: reflect what happens if someone doesn't like his/her parents or children
+        # TODO: reflect what happens if someone doesn't like his/her parents or children
         return (sum([op[0] for op in relations]), relations)
 
     def add_opinion(self, towards: Person, effect: Opinion, reason: str):

@@ -4,6 +4,7 @@ import unittest
 
 from charactersheet.sheet import Charactersheet
 
+
 class TestCharactersheet(unittest.TestCase):
     def test_limits(self):
         mapping = {
@@ -80,6 +81,7 @@ class TestCharactersheet(unittest.TestCase):
 
         c.abilities[1].add_bonus(3, "Test")
         self.assertEqual(c.abilities[1].value, -3)
+
 
 if __name__ == '__main__':
     unittest.main()

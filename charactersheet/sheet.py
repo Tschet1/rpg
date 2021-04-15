@@ -74,7 +74,8 @@ class Ability(Characteristic):
 
     def increase_value(self):
         if self.maxed:
-            raise ValueError(f"Ability {self.name} is at its current max. Increase {self.atribut.name} first.")
+            raise ValueError(
+                f"Ability {self.name} is at its current max. Increase {self.atribut.name} first.")
         super().increase_value()
 
 

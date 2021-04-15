@@ -4,6 +4,7 @@ import re
 from enum import Enum, auto
 from die.dices import D2, D4, D6, D8, D10, D12, D20, D100
 
+
 class DieComposition(object):
     def __init__(self, composition: str):
         self._comp = re.sub(r"([0-9])d([0-9])", r"\1*d\2", composition)
@@ -28,7 +29,6 @@ class DieComposition(object):
         DIV = auto()
         GROUP = auto()
         DIE = auto()
-
 
     def __int__(self):
         return int(self._to_num())
