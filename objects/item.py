@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from enum import Enum
+from die.dices import die
 
 
 class ItemType(Enum):
@@ -8,15 +9,17 @@ class ItemType(Enum):
     ARMOR = 2
     UTILITIES = 3
 
+
 class Item(object):
-    def __init__(self):
+    def __init__(self, name: str, value: int, weight: int):
         super(Item, self).__init__()
         self.__type = ItemType.UTILITIES
 
-        self.__name = ""
-        self.__value = ""
-        self.__type = ""
+        self.__name = name
+        self.__value = value
+        self.__type = ItemType.UTILITIES
 
+        self.__weight = weight
         self.__special = ""
 
     @property
@@ -35,24 +38,28 @@ class Item(object):
     def special(self):
         return self.__special
 
+    @property
+    def weight(self):
+        return self.__weight
+
 
 class Weapon(Item):
-    def __init__(self):
-        super(Weapon, self).__init__()
+    def __init__(self, name: str, value: int, weight: int, required_skill: int, damage: die, crit_chance: int, crit_mult: int, crit_effect: str):
+        super().__init__(name=name, value=value, weight=weight)
         self.__type = ItemType.WEAPON
 
-        self.__required_skill = ""
-        self.__damage = ""
-        self.__crit_mod = ""
-        self.__crit_dmg = ""
-        self.__crit_effect = ""
+        self.__required_skill = required_skill
+        self.__damage = damage
+        self.__crit_chance = crit_chance
+        self.__crit_mult = crit_mult
+        self.__crit_effect = crit_effect
 
 
 class Sword(Weapon):
-    def __init__(self):
-        super(Sword, self).__init__()
+    def __init__(self, dual_wield_skill: int, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-        self.__required_dual_wield_skill = ""
+        self.__required_dual_wield_skill = dual_wield_skill
 
 
 class TwoHandedSwort(Weapon):
@@ -61,14 +68,7 @@ class TwoHandedSwort(Weapon):
 
 
 class Dagger(Weapon):
-    def __init__(self):
-        super(Dagger, self).__init__()
+    def __init__(self, dual_wield_skill: int, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-        self.__required_dual_wield_skill = ""
-
-
-class Dagger(Weapon):
-    def __init__(self):
-        super(Dagger, self).__init__()
-
-        self.__required_dual_wield_skill = ""
+        self.__required_dual_wield_skill = dual_wield_skill
