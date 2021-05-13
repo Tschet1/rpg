@@ -5,7 +5,10 @@ from .address import Address
 from my_system import create_charactersheet
 from .relation import Opinion, Relation
 from .item import Item
-
+from typing import Type
+import objects.names as names
+import random
+import die.dices as die
 
 class Gender(Enum):
     FEMALE = 1
@@ -245,3 +248,41 @@ class Person(object):
     def remove_from_inventory(self, item: Item):
         self.__inventory.remove(item)
         # TODO: implement __eq__ for item
+
+
+def get_random_person(**kwargs) -> Person:
+    def random_char(kwargs: dict, char: str, die: Type(die), rand_fun):
+        if not char in kwargs:
+            print(f"create random {char}")
+            if die is not None:
+                res = int(die)
+                kwargs[char] = rand_fun(res)
+                print(f"RolL {str(die)} -> {res} : {kwargs[char]}")
+            else:
+                kwargs[char] = rand_fun()
+                print(f"{kwargs[char]}")
+
+
+    print("start creating random person")
+    random_char(kwargs, "gender", die.D20, lambda res: Gender.MALE if res < 19 else Gender.FEMALE)
+    random_char(kwargs, "name", None, lambda: ' '.join(names.get_random_name(kwargs['gender'])))
+    random_char(kwargs, "age", die.D20, lambda res: 18 + res)
+    random_char(kwargs, "address", None, lambda: Address())
+
+    def pick_race(rand: int):
+        if(rand < 18):
+            return Race.HUMAN
+        elif(rand < 19):
+            return Race.DWARF
+        else:
+            return Race.ELF
+
+    random_char(kwargs, "race", die.D20, pick_race)
+    random_char(kwargs, "height", die.D20, lambda res: 160 + 2*res)
+    random_char(kwargs, "languages", None, lambda: [])
+    random_char(kwargs, "profession", None, lambda:  random.choice(list(Profession)))
+    random_char(kwargs, "sexorient", die.D20, lambda res: SexualOrientation.HETEROSEXUAL if res < 17 else SexualOrientation.HOMOSEXUAL if res < 19 else SexualOrientation.ASEXUAL)
+
+    # TODO: define additional characteristics and make some things more probable than others
+
+    return Person(**kwargs)

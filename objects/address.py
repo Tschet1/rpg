@@ -5,7 +5,7 @@ from objects.city import City
 
 class Address(object):
     def __init__(self):
-        super(MyClass, self).__init__()
+        super().__init__()
         self.__city = City()
         self.__address = ''
 
@@ -16,3 +16,6 @@ class Address(object):
     @property
     def address(self):
         return self.__address
+
+    def __str__(self):
+        return f"{self.__address}, {self.__city}"
