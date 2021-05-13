@@ -2,7 +2,7 @@
 from __future__ import annotations
 from enum import Enum
 from .address import Address
-from my_system import create_charactersheet, all_items
+from my_system import create_charactersheet
 from .relation import Opinion, Relation
 from .item import Item
 
@@ -128,8 +128,8 @@ class Person(object):
         self.__is_alive = True
 
         # TODO:
-        hp/mana usw.
-        attack, defense, weight of inventory
+        #hp/mana usw.
+        #attack, defense, weight of inventory
 
     @property
     def name(self):

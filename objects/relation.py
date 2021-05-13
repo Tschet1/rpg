@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from enum import IntEnum
-from .person import Person
 
 
 class Opinion(IntEnum):
@@ -14,7 +13,7 @@ class Opinion(IntEnum):
 
 
 class Relation(object):
-    def __init(self, towards_person: Person, reason: str, effect: Opinion):
+    def __init(self, towards_person: "Person", reason: str, effect: Opinion):
         super().__init__()
 
         self.__towards = towards_person

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 from enum import Enum
 from die.dices import die
-
+from typing import Union
+from die.die_composition import DieComposition
 
 class ItemType(Enum):
     WEAPON = 0
@@ -44,31 +45,59 @@ class Item(object):
 
 
 class Weapon(Item):
-    def __init__(self, name: str, value: int, weight: int, required_skill: int, damage: die, crit_chance: int, crit_mult: int, crit_effect: str):
+    def __init__(self, name: str, value: int, weight: int, required_skill: int, damage: Union[die, DieComposition, str] , crit_chance: int, crit_mult: int, crit_effect: str, reach: int):
         super().__init__(name=name, value=value, weight=weight)
         self.__type = ItemType.WEAPON
 
         self.__required_skill = required_skill
-        self.__damage = damage
+
+        if type(damage) == DieComposition:
+            self.__damage = damage
+        else:
+            self.__damage = DieComposition(str(damage))
+
         self.__crit_chance = crit_chance
         self.__crit_mult = crit_mult
         self.__crit_effect = crit_effect
+        self.__reach = reach
 
 
 class Sword(Weapon):
     def __init__(self, dual_wield_skill: int, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, reach=1, **kwargs)
 
         self.__required_dual_wield_skill = dual_wield_skill
 
 
-class TwoHandedSwort(Weapon):
-    def __init__(self):
-        super(Sword, self).__init__()
+class TwoHandedWeapon(Weapon):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
 
 class Dagger(Weapon):
     def __init__(self, dual_wield_skill: int, *args, **kwargs):
+        super().__init__(*args, reach=1, **kwargs)
+
+        self.__required_dual_wield_skill = dual_wield_skill
+
+
+class Whip(Weapon):
+    def __init__(self, dual_wield_skill: int, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.__required_dual_wield_skill = dual_wield_skill
+
+
+class Bow(Weapon):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+class Crossbow(Weapon):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+class ThrowingWeapons(Weapon):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
