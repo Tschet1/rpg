@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import random
-from .person import Gender
+from .gender import Gender
 
 FIRST_NAMES_MALE = (
     "Abrecht",

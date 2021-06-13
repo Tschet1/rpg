@@ -2,19 +2,14 @@
 from __future__ import annotations
 from enum import Enum
 from .address import Address
-from my_system import create_charactersheet
+from my_system import System
 from .relation import Opinion, Relation
 from .item import Item
 from typing import Type
 import objects.names as names
 import random
 import die.dices as die
-
-class Gender(Enum):
-    FEMALE = 1
-    MALE = 2
-    NONE = 3
-
+from objects.gender import Gender
 
 class SexualOrientation(Enum):
     HOMOSEXUAL = 1
@@ -114,21 +109,24 @@ class Person(object):
 
         self.__father = None
         self.__mother = None
-        self.__children = None
+        self.__children = []
+        self.__spouse = None
         self.__pets = None
 
         self.__relations = []
 
         self.__notes = []
 
-        self.__sheet = create_charactersheet()
+        self.__sheet = System()
         self.__sexual_orientation = sexorient
 
         self.__inventroy = {}
 
-        # TODO: create getter/setters
         self.__age = age
         self.__is_alive = True
+
+        # TODO: getters / setters
+        self.__hp = self.__sheet.max_life
 
         # TODO:
         #hp/mana usw.
@@ -175,11 +173,41 @@ class Person(object):
         self.__mother = mother
 
     @property
+    def spouse(self):
+        return self.__spouse
+
+    @spouse.setter
+    def spouse(self, spouse: Person):
+        self.__spouse = spouse
+
+    @property
     def children(self):
         return self.__children
 
     def add_child(self, child: Person):
         self.__children.append(child)
+
+    @property
+    def age(self):
+        return self.__age
+
+    @age.setter
+    def age(self, age: int):
+        self.__age = age
+
+    @property
+    def is_alive(self):
+        return self.__is_alive
+
+    def die(self):
+        if not self.__is_alive:
+            raise Exception("Already dead")
+        self.__is_alive = False
+
+    def revive(self):
+        if self.__is_alive:
+            raise Exception("Already alive")
+        self.__is_alive = True
 
     @property
     def pets(self):
