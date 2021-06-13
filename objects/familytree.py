@@ -4,6 +4,7 @@ from objects.person import Person, Gender
 from graphviz import Graph
 from pathlib import Path
 
+
 def create_whole_family_tree(person: Person, filename: Path):
     head = person
     while(head.father):

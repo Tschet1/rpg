@@ -11,6 +11,7 @@ import random
 import die.dices as die
 from objects.gender import Gender
 
+
 class SexualOrientation(Enum):
     HOMOSEXUAL = 1
     HETEROSEXUAL = 2
@@ -129,8 +130,8 @@ class Person(object):
         self.__hp = self.__sheet.max_life
 
         # TODO:
-        #hp/mana usw.
-        #attack, defense, weight of inventory
+        # hp/mana usw.
+        # attack, defense, weight of inventory
 
     @property
     def name(self):
@@ -290,10 +291,11 @@ def get_random_person(**kwargs) -> Person:
                 kwargs[char] = rand_fun()
                 print(f"{kwargs[char]}")
 
-
     print("start creating random person")
-    random_char(kwargs, "gender", die.D20, lambda res: Gender.MALE if res < 19 else Gender.FEMALE)
-    random_char(kwargs, "name", None, lambda: ' '.join(names.get_random_name(kwargs['gender'])))
+    random_char(kwargs, "gender", die.D20,
+                lambda res: Gender.MALE if res < 19 else Gender.FEMALE)
+    random_char(kwargs, "name", None, lambda: ' '.join(
+        names.get_random_name(kwargs['gender'])))
     random_char(kwargs, "age", die.D20, lambda res: 18 + res)
     random_char(kwargs, "address", None, lambda: Address())
 
@@ -308,8 +310,10 @@ def get_random_person(**kwargs) -> Person:
     random_char(kwargs, "race", die.D20, pick_race)
     random_char(kwargs, "height", die.D20, lambda res: 160 + 2*res)
     random_char(kwargs, "languages", None, lambda: [])
-    random_char(kwargs, "profession", None, lambda:  random.choice(list(Profession)))
-    random_char(kwargs, "sexorient", die.D20, lambda res: SexualOrientation.HETEROSEXUAL if res < 17 else SexualOrientation.HOMOSEXUAL if res < 19 else SexualOrientation.ASEXUAL)
+    random_char(kwargs, "profession", None,
+                lambda:  random.choice(list(Profession)))
+    random_char(kwargs, "sexorient", die.D20, lambda res: SexualOrientation.HETEROSEXUAL if res <
+                17 else SexualOrientation.HOMOSEXUAL if res < 19 else SexualOrientation.ASEXUAL)
 
     # TODO: define additional characteristics and make some things more probable than others
 

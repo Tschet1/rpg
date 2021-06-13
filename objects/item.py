@@ -4,6 +4,7 @@ from die.dices import die
 from typing import Union
 from die.die_composition import DieComposition
 
+
 class ItemType(Enum):
     WEAPON = 0
     SHIELD = 1
@@ -45,7 +46,7 @@ class Item(object):
 
 
 class Weapon(Item):
-    def __init__(self, name: str, value: int, weight: int, required_skill: int, damage: Union[die, DieComposition, str] , crit_chance: int, crit_mult: int, crit_effect: str, reach: int):
+    def __init__(self, name: str, value: int, weight: int, required_skill: int, damage: Union[die, DieComposition, str], crit_chance: int, crit_mult: int, crit_effect: str, reach: int):
         super().__init__(name=name, value=value, weight=weight)
         self.__type = ItemType.WEAPON
 

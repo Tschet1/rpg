@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from abc import ABC, abstractmethod
 
+
 class Bonus(object):
     def __init__(self, value: int, explanation: str):
         super().__init__()

@@ -4,6 +4,7 @@ import unittest
 
 from my_system import System
 
+
 class mod_system(System):
     @property
     def attribute_ability_mapping(self) -> dict:
@@ -11,6 +12,7 @@ class mod_system(System):
             "strength": ["Running", "Swimming", "Climbing"],
             "intelligence": ["Hustle", "Read"]
         }
+
 
 class TestCharactersheet(unittest.TestCase):
     def test_limits(self):

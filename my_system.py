@@ -2,6 +2,7 @@
 
 from charactersheet.sheet import Charactersheet
 
+
 class System(Charactersheet):
     @property
     def attribute_ability_mapping(self) -> dict:

@@ -5,6 +5,7 @@ import unittest
 from objects.names import *
 from objects.person import Gender
 
+
 class TestNames(unittest.TestCase):
     def test_names(self):
         name = get_random_last_name()
