@@ -8,6 +8,9 @@ class System(Charactersheet):
     def attribute_ability_mapping(self) -> dict:
         return {
             "Health": [],
+            "Agilität": [
+                "Rennen",
+            ],
             "Stärke": [
                 "Klettern & Springen",
                 "Schwimmen",
@@ -17,7 +20,6 @@ class System(Charactersheet):
             ],
             "Geschicklichkeit": [
                 "Reiten",
-                "Rennen",
                 "Heimlichkeit",
                 "Schlösser Knacken",
                 "Parieren",
@@ -62,3 +64,7 @@ class System(Charactersheet):
     @property
     def max_life(self):
         return self.Health * 4
+
+    @property
+    def fight_speed(self):
+        return (self.Agilität / 10) + 1

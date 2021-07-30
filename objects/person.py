@@ -134,6 +134,10 @@ class Person(object):
         # attack, defense, weight of inventory
 
     @property
+    def stats(self):
+        return self.__sheet
+
+    @property
     def name(self):
         return self.__name
 
@@ -256,6 +260,10 @@ class Person(object):
         self.__notes.append(note)
 
     @property
+    def fight_speed(self):
+        return self.__sheet.fight_speed
+
+    @property
     def sexual_orientation(self):
         return self.__sexual_orientation
 
@@ -286,7 +294,7 @@ def get_random_person(**kwargs) -> Person:
             if die is not None:
                 res = int(die)
                 kwargs[char] = rand_fun(res)
-                print(f"RolL {str(die)} -> {res} : {kwargs[char]}")
+                print(f"Roll {str(die)} -> {res} : {kwargs[char]}")
             else:
                 kwargs[char] = rand_fun()
                 print(f"{kwargs[char]}")

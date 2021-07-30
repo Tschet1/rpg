@@ -59,8 +59,20 @@ class Characteristic(object):
     def __int__(self):
         return self.value
 
+    def __float__(self):
+        return float(self.value)
+
     def __mul__(self, other):
         return int(self) * other
+
+    def __rmul__(self, other):
+        return int(self) * other
+
+    def __floordiv__(self, other):
+        return int(self) // other
+
+    def __truediv__(self, other):
+        return float(self) / other
 
     def __rmul__(self, other):
         return int(self) * other
@@ -103,6 +115,10 @@ class Charactersheet(ABC):
     @abstractmethod
     def max_life(self):
         pass
+
+    @property
+    def fight_speed(self):
+        return 1
 
     def __init__(self):
         self._attributes = []
