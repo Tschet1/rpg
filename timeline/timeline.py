@@ -56,12 +56,21 @@ class Timeline(object):
     def past(self):
         return self.__events[0:bisect.bisect(self.__events, Event("", self.__now))]
 
+    def get_filtered_past(self, visibility):
+        return [ev for ev in self.past if visibility in ev.visibility]
+
     @property
     def future(self):
         return self.__events[bisect.bisect(self.__events, Event("", self.__now)):]
 
-    def add_event(self, event: Event):
-        bisect.insort(self.__events, event)
+    def get_filtered_future(self, visibility):
+        return [ev for ev in self.future if visibility in ev.visibility]
+
+    def add_event(self, event: Event, fifo: bool = True):
+        if fifo:
+            bisect.insort(self.__events, event)
+        else:
+            bisect.insort_left(self.__events, event)
 
     @property
     def now(self):

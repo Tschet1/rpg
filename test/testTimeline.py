@@ -187,6 +187,52 @@ class TestTimeline(unittest.TestCase):
 
         self.assertListEqual(tl.future, tl2.future)
 
+    def test_concurrent_events(self):
+        tl = Timeline()
+
+        events = [Event(f"Event first", datetime(1, 1, 2)),
+                  Event(f"Event second", datetime(1, 1, 2))]
+        tl.add_event(events[0])
+        tl.add_event(events[1])
+        self.assertEqual(len(tl.future), 2)
+        self.assertEqual(len(tl.past), 0)
+        self.assertListEqual(tl.future, events)
+
+    def test_concurrent_events_not_fifo(self):
+        tl = Timeline()
+
+        events = [Event(f"Event first", datetime(1, 1, 2)),
+                  Event(f"Event second", datetime(1, 1, 2))]
+        tl.add_event(events[0], fifo=False)
+        tl.add_event(events[1], fifo=False)
+        self.assertEqual(len(tl.future), 2)
+        self.assertEqual(len(tl.past), 0)
+        self.assertListEqual(tl.future, list(reversed(events)))
+
+    def test_filtered(self):
+        tl = Timeline()
+
+        events = [
+            Event(f"Event 1", datetime(1, 1, 1), visibility=["1", "2"]),
+            Event(f"Event 2", datetime(1, 1, 2), visibility=["2"]),
+            # now
+            Event(f"Event 3", datetime(1, 1, 3), visibility=["1"]),
+            Event(f"Event 4", datetime(1, 1, 4), visibility=["1", "2"]),
+            Event(f"Event 5", datetime(1, 1, 5), visibility=["2"])
+        ]
+        for event in events:
+            tl.add_event(event)
+
+        tl.now = datetime(1, 1, 2, 5)
+
+        self.assertEqual(len(tl.future), 3)
+        self.assertEqual(len(tl.past), 2)
+
+        self.assertEqual(len(tl.get_filtered_future('1')), 2)
+        self.assertEqual(len(tl.get_filtered_future('2')), 2)
+        self.assertEqual(len(tl.get_filtered_past('1')), 1)
+        self.assertEqual(len(tl.get_filtered_past('2')), 2)
+
 
 if __name__ == '__main__':
     unittest.main()
