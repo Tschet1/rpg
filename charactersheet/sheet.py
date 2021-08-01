@@ -138,12 +138,7 @@ class Charactersheet(ABC):
 
     @property
     @abstractmethod
-    def attack_ranged(self):
-        pass
-
-    @property
-    @abstractmethod
-    def attack_melee(self):
+    def attack(self):
         pass
 
     @property

@@ -211,6 +211,10 @@ class Person(object):
         self.__sheet.weapon = weapon
 
     @property
+    def sheet(self):
+        return self.__sheet
+
+    @property
     def is_alive(self):
         return self.__is_alive
 
@@ -276,6 +280,10 @@ class Person(object):
     @property
     def dmg(self):
         return self.__sheet.dmg
+
+    @property
+    def attack(self):
+        return self.__sheet.attack
 
     @property
     def sexual_orientation(self):

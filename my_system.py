@@ -89,12 +89,9 @@ class System(Charactersheet):
         return self.Parieren
 
     @property
-    def attack_ranged(self):
-        raise NotImplementedError()
-
-    @property
-    def attack_melee(self):
-        raise NotImplementedError()
+    def attack(self):
+        at = self.abilities[self.weapon.related_skill].attribut
+        return at.value + round(mean([int(ab) for ab in at.abilities.values()]))
 
     @property
     def dmg(self):
@@ -103,5 +100,4 @@ class System(Charactersheet):
 
         ability = self.abilities[self.weapon.related_skill]
         attribut = ability.attribut
-        abilities = attribut.abilities
-        return self.weapon.damage + round(mean([int(ab) for ab in abilities.values()]))
+        return self.weapon.damage + attribut.value // 5

@@ -16,11 +16,11 @@ class DieComposition(object):
         self._comp = re.sub(r" */ *", r" / ", self._comp)
         self._comp = self._comp.strip()
 
-    def __string__(self):
+    def __str__(self):
         return self._comp
 
     def __repr__(self):
-        return self.__string__()
+        return self._comp.replace(" ", "")
 
     class Operator(Enum):
         PLUS = auto()
@@ -47,6 +47,9 @@ class DieComposition(object):
 
     def __truediv__(self, other):
         return DieComposition(f"({repr(self)}) / ({other})")
+
+    def __eq__(self, other):
+        return repr(self) == repr(other)
 
     def _to_num(self):
         expression = self._comp
