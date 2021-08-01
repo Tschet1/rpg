@@ -63,8 +63,10 @@ class Weapon(Item):
         self.__crit_effect = crit_effect
         self.__reach = reach
 
+
 class SingleHandMeleeWeapon(Weapon):
     pass
+
 
 class Sword(SingleHandMeleeWeapon):
     def __init__(self, dual_wield_skill: int, *args, **kwargs):
@@ -91,8 +93,10 @@ class Whip(SingleHandMeleeWeapon):
 
         self.__required_dual_wield_skill = dual_wield_skill
 
+
 class RangedWeapon(Weapon):
     pass
+
 
 class Bow(RangedWeapon):
     def __init__(self, *args, **kwargs):

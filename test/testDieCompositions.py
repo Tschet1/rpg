@@ -112,7 +112,6 @@ class TestDieComposition(unittest.TestCase):
             self.assertTrue(
                 max_reached, f"Max value {cma} for pattern {pat} not hit in {repetitions} rounds")
 
-
     def test_arith_minus(self):
         test_vector = [
             ("2+1d6", 3, 8),
@@ -141,7 +140,6 @@ class TestDieComposition(unittest.TestCase):
             self.assertTrue(
                 max_reached, f"Max value {cma} for pattern {pat} not hit in {repetitions} rounds")
 
-
     def test_arith_mult(self):
         test_vector = [
             ("2+1d6", 3, 8),
@@ -169,7 +167,6 @@ class TestDieComposition(unittest.TestCase):
                 min_reached, f"Min value {cmi} for pattern {pat} not hit in {repetitions} rounds")
             self.assertTrue(
                 max_reached, f"Max value {cma} for pattern {pat} not hit in {repetitions} rounds")
-
 
     def test_arith_div(self):
         test_vector = [
@@ -200,8 +197,11 @@ class TestDieComposition(unittest.TestCase):
                 max_reached, f"Max value {cma} for pattern {pat} not hit in {repetitions} rounds")
 
     def test_arith_chain(self):
-        comp = (DieComposition("2+1d6") + DieComposition("2+2d6") - DieComposition("1d2")) * DieComposition("1+5d2") / DieComposition("1d8 + 2")
-        self.assertEqual(str(comp).replace(" ", ""), "((2+1*d6+2+2*d6-1*d2)*(1+5*d2))/(1*d8+2)")
+        comp = (DieComposition("2+1d6") + DieComposition("2+2d6") -
+                DieComposition("1d2")) * DieComposition("1+5d2") / DieComposition("1d8 + 2")
+        self.assertEqual(str(comp).replace(" ", ""),
+                         "((2+1*d6+2+2*d6-1*d2)*(1+5*d2))/(1*d8+2)")
+
 
 if __name__ == '__main__':
     unittest.main()

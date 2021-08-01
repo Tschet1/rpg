@@ -5,6 +5,7 @@ import unittest
 from objects.person import get_random_person
 from item_store import ITEMS
 
+
 class TestMySystem(unittest.TestCase):
     def test_dmg(self):
         pers = get_random_person()
@@ -20,7 +21,8 @@ class TestMySystem(unittest.TestCase):
             pers.sheet.Einhandwaffen.increase_value()
             pers.sheet.Schwerter.increase_value()
             dmg = pers.dmg
-            self.assertEqual(dmg, pers.weapon.damage + pers.sheet.Schwerter.value // 5)
+            self.assertEqual(dmg, pers.weapon.damage +
+                             pers.sheet.Schwerter.value // 5)
 
     def test_attack(self):
         pers = get_random_person()
@@ -37,12 +39,14 @@ class TestMySystem(unittest.TestCase):
             pers.sheet.Einhandwaffen.increase_value()
             pers.sheet.Schwerter.increase_value()
             at = pers.attack
-            self.assertEqual(at, pers.sheet.Einhandwaffen.value + round(pers.sheet.Schwerter.value / len(pers.sheet.Einhandwaffen.abilities)))
+            self.assertEqual(at, pers.sheet.Einhandwaffen.value + round(
+                pers.sheet.Schwerter.value / len(pers.sheet.Einhandwaffen.abilities)))
 
         for i in range(20):
             pers.sheet.Dolche.increase_value()
             at = pers.attack
-            self.assertEqual(at, pers.sheet.Einhandwaffen.value + round((pers.sheet.Schwerter.value + pers.sheet.Dolche.value) / len(pers.sheet.Einhandwaffen.abilities)))
+            self.assertEqual(at, pers.sheet.Einhandwaffen.value + round((pers.sheet.Schwerter.value +
+                             pers.sheet.Dolche.value) / len(pers.sheet.Einhandwaffen.abilities)))
 
 
 if __name__ == '__main__':

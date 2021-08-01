@@ -4,6 +4,7 @@ from charactersheet.sheet import Charactersheet
 from objects.item import SingleHandMeleeWeapon, RangedWeapon, TwoHandedWeapon
 from numpy import mean
 
+
 class System(Charactersheet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -95,7 +96,7 @@ class System(Charactersheet):
 
     @property
     def dmg(self):
-        #TODO: fix:
+        # TODO: fix:
         #   why ITEMS as list?
 
         ability = self.abilities[self.weapon.related_skill]

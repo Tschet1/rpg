@@ -64,7 +64,8 @@ class TestCharactersheet(unittest.TestCase):
             "Climbing": c.Climbing
         })
 
-        self.assertEqual(c.abilities['Running'].attribut, c.attributes['strength'])
+        self.assertEqual(
+            c.abilities['Running'].attribut, c.attributes['strength'])
         self.assertEqual(c.Running.attribut, c.strength)
 
     def test_bonus(self):
@@ -102,9 +103,11 @@ class TestCharactersheet(unittest.TestCase):
         c.abilities['Read'].increase_value()
         self.assertEqual(c.abilities['Read'].attribut, c.intelligence)
         self.assertEqual(c.abilities['Read'], c.Read)
-        self.assertEqual(str(c.abilities['Read'].attribut), str(c.intelligence))
+        self.assertEqual(
+            str(c.abilities['Read'].attribut), str(c.intelligence))
         self.assertEqual(str(c.abilities['Read']), str(c.Read))
-        self.assertEqual(int(c.abilities['Read'].attribut), int(c.intelligence))
+        self.assertEqual(
+            int(c.abilities['Read'].attribut), int(c.intelligence))
         self.assertEqual(int(c.abilities['Read']), int(c.Read))
 
 
