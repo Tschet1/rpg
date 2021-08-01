@@ -46,24 +46,27 @@ class Item(object):
 
 
 class Weapon(Item):
-    def __init__(self, name: str, value: int, weight: int, required_skill: int, damage: Union[die, DieComposition, str], crit_chance: int, crit_mult: int, crit_effect: str, reach: int):
+    def __init__(self, name: str, value: int, weight: int, related_skill, required_skill: int, damage: Union[die, DieComposition, str], crit_chance: int, crit_mult: int, crit_effect: str, reach: int):
         super().__init__(name=name, value=value, weight=weight)
         self.__type = ItemType.WEAPON
 
-        self.__required_skill = required_skill
+        self.required_skill = required_skill
+        self.related_skill = related_skill
 
         if type(damage) == DieComposition:
-            self.__damage = damage
+            self.damage = damage
         else:
-            self.__damage = DieComposition(str(damage))
+            self.damage = DieComposition(str(damage))
 
         self.__crit_chance = crit_chance
         self.__crit_mult = crit_mult
         self.__crit_effect = crit_effect
         self.__reach = reach
 
+class SingleHandMeleeWeapon(Weapon):
+    pass
 
-class Sword(Weapon):
+class Sword(SingleHandMeleeWeapon):
     def __init__(self, dual_wield_skill: int, *args, **kwargs):
         super().__init__(*args, reach=1, **kwargs)
 
@@ -75,30 +78,32 @@ class TwoHandedWeapon(Weapon):
         super().__init__(*args, **kwargs)
 
 
-class Dagger(Weapon):
+class Dagger(SingleHandMeleeWeapon):
     def __init__(self, dual_wield_skill: int, *args, **kwargs):
         super().__init__(*args, reach=1, **kwargs)
 
         self.__required_dual_wield_skill = dual_wield_skill
 
 
-class Whip(Weapon):
+class Whip(SingleHandMeleeWeapon):
     def __init__(self, dual_wield_skill: int, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.__required_dual_wield_skill = dual_wield_skill
 
+class RangedWeapon(Weapon):
+    pass
 
-class Bow(Weapon):
+class Bow(RangedWeapon):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
 
-class Crossbow(Weapon):
+class Crossbow(RangedWeapon):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
 
-class ThrowingWeapons(Weapon):
+class ThrowingWeapons(RangedWeapon):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

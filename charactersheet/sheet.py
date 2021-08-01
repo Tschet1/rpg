@@ -82,7 +82,12 @@ class Characteristic(object):
 
 
 class Attribut(Characteristic):
-    pass
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.abilities = {}
+
+    def addAbility(self, ability: "Ability"):
+        self.abilities[ability.name] = ability
 
 
 class Ability(Characteristic):
@@ -117,22 +122,54 @@ class Charactersheet(ABC):
         pass
 
     @property
+    @abstractmethod
+    def max_carry_weight(self):
+        pass
+
+    @property
+    @abstractmethod
+    def defense_ranged(self):
+        pass
+
+    @property
+    @abstractmethod
+    def defense_melee(self):
+        pass
+
+    @property
+    @abstractmethod
+    def attack_ranged(self):
+        pass
+
+    @property
+    @abstractmethod
+    def attack_melee(self):
+        pass
+
+    @property
+    @abstractmethod
+    def dmg(self):
+        pass
+
+    @property
     def fight_speed(self):
         return 1
 
     def __init__(self):
-        self._attributes = []
-        self._abilities = []
+        self._attributes = {}
+        self._abilities = {}
+        self.level = 0
 
         for attribute_name, ability_names in self.attribute_ability_mapping.items():
             attribut = Attribut(attribute_name)
             for ability_name in ability_names:
                 ability = Ability(ability_name, attribut)
-                self._abilities.append(ability)
+                self._abilities[ability.name] = ability
+                attribut.addAbility(ability)
                 setattr(self, str(ability), ability)
 
             setattr(self, str(attribut), attribut)
-            self._attributes.append(attribut)
+            self._attributes[attribut.name] = attribut
 
     @property
     def attributes(self):

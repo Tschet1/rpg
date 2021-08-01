@@ -36,6 +36,18 @@ class DieComposition(object):
     def __float__(self):
         return float(self._to_num())
 
+    def __add__(self, other):
+        return DieComposition(f"{repr(self)} + {other}")
+
+    def __sub__(self, other):
+        return DieComposition(f"{repr(self)} - {other}")
+
+    def __mul__(self, other):
+        return DieComposition(f"({repr(self)}) * ({other})")
+
+    def __truediv__(self, other):
+        return DieComposition(f"({repr(self)}) / ({other})")
+
     def _to_num(self):
         expression = self._comp
 

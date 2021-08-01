@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
 
 from charactersheet.sheet import Charactersheet
-
+from objects.item import SingleHandMeleeWeapon, RangedWeapon, TwoHandedWeapon
+from numpy import mean
 
 class System(Charactersheet):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.weapon = None
+
     @property
     def attribute_ability_mapping(self) -> dict:
         return {
-            "Health": [],
+            "Gesundheit": [],
+            "Tragekapazität": [],
             "Agilität": [
                 "Rennen",
             ],
@@ -58,13 +64,44 @@ class System(Charactersheet):
             "Zweihandwaffen": [
                 "Breitschwerter",
                 "Stangenwaffen",
+                "Äxte",
             ],
         }
 
     @property
     def max_life(self):
-        return self.Health * 4
+        return self.Gesundheit * 4
 
     @property
     def fight_speed(self):
         return (self.Agilität / 10) + 1
+
+    @property
+    def max_carry_weight(self):
+        return self.Tragekapazität * 5 + 5
+
+    @property
+    def defense_ranged(self):
+        return self.Reflexe
+
+    @property
+    def defense_melee(self):
+        return self.Parieren
+
+    @property
+    def attack_ranged(self):
+        raise NotImplementedError()
+
+    @property
+    def attack_melee(self):
+        raise NotImplementedError()
+
+    @property
+    def dmg(self):
+        #TODO: fix:
+        #   why ITEMS as list?
+
+        ability = self.abilities[self.weapon.related_skill]
+        attribut = ability.attribut
+        abilities = attribut.abilities
+        return self.weapon.damage + round(mean([int(ab) for ab in abilities.values()]))

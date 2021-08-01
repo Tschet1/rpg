@@ -4,7 +4,7 @@ from enum import Enum
 from .address import Address
 from my_system import System
 from .relation import Opinion, Relation
-from .item import Item
+from .item import Item, Weapon
 from typing import Type
 import objects.names as names
 import random
@@ -201,6 +201,16 @@ class Person(object):
         self.__age = age
 
     @property
+    def weapon(self):
+        return self.__sheet.weapon
+
+    @weapon.setter
+    def weapon(self, weapon):
+        if(not isinstance(weapon, Weapon)):
+            raise Exception("Tried to equip something that is not a weapon")
+        self.__sheet.weapon = weapon
+
+    @property
     def is_alive(self):
         return self.__is_alive
 
@@ -262,6 +272,10 @@ class Person(object):
     @property
     def fight_speed(self):
         return self.__sheet.fight_speed
+
+    @property
+    def dmg(self):
+        return self.__sheet.dmg
 
     @property
     def sexual_orientation(self):
