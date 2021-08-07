@@ -17,6 +17,9 @@ class SexualOrientation(Enum):
     HETEROSEXUAL = 2
     ASEXUAL = 3
 
+    def __str__(self):
+        return self.name
+
 
 class Race(Enum):
     HUMAN = 1
@@ -24,9 +27,15 @@ class Race(Enum):
     NIXE = 3
     ELF = 4
 
+    def __str__(self):
+        return self.name
+
 
 class Language(Enum):
     DEF = 1
+
+    def __str__(self):
+        return self.name
 
 
 class Profession(Enum):
@@ -85,6 +94,8 @@ class Profession(Enum):
 
     Animal = 52
 
+    def __str__(self):
+        return self.name
 
 class Person(object):
     def __init__(self,
