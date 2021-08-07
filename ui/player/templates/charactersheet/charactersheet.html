@@ -1,0 +1,74 @@
+<h1>{{charakter.name}}</h1>
+
+<table>
+  <tr>
+    <td>Name</td><td>{{charakter.name}}</td>
+  </tr>
+  <tr>
+    <td>Addresse</td><td>{{charakter.address}}</td>
+  </tr>
+  <tr>
+    <td>Rasse</td><td>{{charakter.race}}</td>
+  </tr>
+  <tr>
+    <td>Grösse</td><td>{{charakter.height}}</td>
+  </tr>
+
+  <tr>
+    <td>Beruf</td><td>{{charakter.profession}}</td>
+  </tr>
+
+  <tr>
+    <td>Vater</td><td>{{charakter.father}}</td>
+  </tr>
+  <tr>
+    <td>Mutter</td><td>{{charakter.mother}}</td>
+  </tr>
+  <tr>
+    <td>Kinder</td><td>{{charakter.children}}</td>
+  </tr>
+  <tr>
+    <td>Ehemann/Frau</td><td>{{charakter.spouse}}</td>
+  </tr>
+  <tr>
+    <td>Haustiere</td><td>{{charakter.pets}}</td>
+  </tr>
+
+  {% if dm %}
+  <tr>
+    <td>relations</td><td>{{charakter.relations}}</td>
+  </tr>
+  {% endif %}
+
+  {% if dm %}
+  <tr>
+    <td>notes</td><td>{{charakter.notes}}</td>
+  </tr>
+  {% endif %}
+
+  <tr>
+    <td>sexual_orientation</td><td>{{charakter.sexual_orientation}}</td>
+  </tr>
+
+  <tr>
+    <td>inventroy</td><td>{{charakter.inventroy}}</td>
+  </tr>
+
+  <tr>
+    <td>age</td><td>{{charakter.age}}</td>
+  </tr>
+
+  {% if dm %}
+  <tr>
+    <td>is_alive</td><td>{{charakter.is_alive}}</td>
+  </tr>
+  {% endif %}
+
+</table>
+
+{% for _, attribute in charakter.sheet.attributes.items %}
+<h2>{{ attribute.name }} ({{attribute.value}})</h2>
+<div>{% for _, ability in attribute.abilities.items %}</div>
+{{ability.name}} ({{ability.value}})
+{% endfor %}
+{% endfor %}
