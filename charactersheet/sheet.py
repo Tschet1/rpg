@@ -12,6 +12,11 @@ class Bonus(object):
     def value(self):
         return self.__value
 
+    def __str__(self):
+        if self.value > 0:
+            return f"+{self.value} ({self.__explanation}) "
+        return f"{self.value} ({self.__explanation}) "
+
 
 class Characteristic(object):
     def __init__(self, name: str):
@@ -23,7 +28,11 @@ class Characteristic(object):
 
     @property
     def value(self):
-        return self.__value + sum([bonus.value for bonus in self.__bonus])
+        return self.__value
+
+    @value.setter
+    def value(self, val: int):
+        self.__value = val
 
     def increase_value(self):
         if self.__value >= self.__max_value:
@@ -52,6 +61,10 @@ class Characteristic(object):
     @property
     def name(self):
         return self.__name
+
+    @property
+    def bonus(self):
+        return self.__bonus
 
     def __str__(self):
         return self.name
