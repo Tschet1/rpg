@@ -1,74 +1,197 @@
-<h1>{{charakter.name}}</h1>
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+</head>
 
-<table>
-  <tr>
-    <td>Name</td><td>{{charakter.name}}</td>
-  </tr>
-  <tr>
-    <td>Addresse</td><td>{{charakter.address}}</td>
-  </tr>
-  <tr>
-    <td>Rasse</td><td>{{charakter.race}}</td>
-  </tr>
-  <tr>
-    <td>Grösse</td><td>{{charakter.height}}</td>
-  </tr>
+<body>
+  <div class="container">
+    <h1>{{charakter.name}}</h1>
 
-  <tr>
-    <td>Beruf</td><td>{{charakter.profession}}</td>
-  </tr>
+    <table>
+      <tr>
+        <td>Name</td><td>{{charakter.name}}</td>
+      </tr>
+      <tr>
+        <td>Addresse</td><td>{{charakter.address}}</td>
+      </tr>
+      <tr>
+        <td>Rasse</td><td>{{charakter.race}}</td>
+      </tr>
+      <tr>
+        <td>Grösse</td><td>{{charakter.height}}</td>
+      </tr>
 
-  <tr>
-    <td>Vater</td><td>{{charakter.father}}</td>
-  </tr>
-  <tr>
-    <td>Mutter</td><td>{{charakter.mother}}</td>
-  </tr>
-  <tr>
-    <td>Kinder</td><td>{{charakter.children}}</td>
-  </tr>
-  <tr>
-    <td>Ehemann/Frau</td><td>{{charakter.spouse}}</td>
-  </tr>
-  <tr>
-    <td>Haustiere</td><td>{{charakter.pets}}</td>
-  </tr>
+      <tr>
+        <td>Beruf</td><td>{{charakter.profession}}</td>
+      </tr>
 
-  {% if dm %}
-  <tr>
-    <td>relations</td><td>{{charakter.relations}}</td>
-  </tr>
-  {% endif %}
+      <tr>
+        <td>Vater</td><td>{{charakter.father}}</td>
+      </tr>
+      <tr>
+        <td>Mutter</td><td>{{charakter.mother}}</td>
+      </tr>
+      <tr>
+        <td>Kinder</td><td>{{charakter.children}}</td>
+      </tr>
+      <tr>
+        <td>Ehemann/Frau</td><td>{{charakter.spouse}}</td>
+      </tr>
+      <tr>
+        <td>Haustiere</td><td>{{charakter.pets}}</td>
+      </tr>
 
-  {% if dm %}
-  <tr>
-    <td>notes</td><td>{{charakter.notes}}</td>
-  </tr>
-  {% endif %}
+      {% if dm %}
+      <tr>
+        <td>relations</td><td>{{charakter.relations}}</td>
+      </tr>
+      {% endif %}
 
-  <tr>
-    <td>sexual_orientation</td><td>{{charakter.sexual_orientation}}</td>
-  </tr>
+      {% if dm %}
+      <tr>
+        <td>notes</td><td>{{charakter.notes}}</td>
+      </tr>
+      {% endif %}
 
-  <tr>
-    <td>inventroy</td><td>{{charakter.inventroy}}</td>
-  </tr>
+      <tr>
+        <td>sexual_orientation</td><td>{{charakter.sexual_orientation}}</td>
+      </tr>
 
-  <tr>
-    <td>age</td><td>{{charakter.age}}</td>
-  </tr>
+      <tr>
+        <td>inventroy</td><td>{{charakter.inventroy}}</td>
+      </tr>
 
-  {% if dm %}
-  <tr>
-    <td>is_alive</td><td>{{charakter.is_alive}}</td>
-  </tr>
-  {% endif %}
+      <tr>
+        <td>age</td><td>{{charakter.age}}</td>
+      </tr>
 
-</table>
+      {% if dm %}
+      <tr>
+        <td>is_alive</td><td>{{charakter.is_alive}}</td>
+      </tr>
+      {% endif %}
 
-{% for _, attribute in charakter.sheet.attributes.items %}
-<h2>{{ attribute.name }} ({{attribute.value}})</h2>
-<div>{% for _, ability in attribute.abilities.items %}</div>
-{{ability.name}} ({{ability.value}})
-{% endfor %}
-{% endfor %}
+    </table>
+
+    <hr>
+    <div class="row">
+        <div class="col-2">
+          <b>Attribut</b>
+        </div>
+        <div class="col-1">
+          <b>Wert</b>
+        </div>
+        <div class="col-3">
+          <b>Bonus</b>
+        </div>
+        <div class="col-2">
+          <b>Fähigkeit</b>
+        </div>
+        <div class="col-1">
+          <b>Wert</b>
+        </div>
+        <div class="col-3">
+          <b>Bonus</b>
+        </div>
+    </div>
+
+    <hr>
+    {% for _, attribute in charakter.sheet.attributes.items %}
+    <div class="row">
+        <div class="col-2">
+        {{ attribute.name }}
+        </div>
+        <div class="col-1 att" id="{{attribute.name}}">
+          <div>{{attribute.value}}</div>
+          <div class="up">&#x2191</div>
+          <div class="down">&#x2193;</div>
+        </div>
+        <div class="col-3">
+        {% for bonus in attribute.bonus %}
+        <li style="list-style-type:none;">{{bonus}}</li>
+        {% endfor %}
+        </div>
+
+
+        <div class="col-6">
+          <div class="container">
+            {% for _, ability in attribute.abilities.items %}
+            {% if not forloop.first %}
+            <hr>
+            {% endif %}
+
+            <div class="row">
+
+              <div class="col-4">
+                <li style="list-style-type:none;">{{ability.name}}</li>
+              </div>
+              <div class="col-2">
+                <li style="list-style-type:none;">{{ability.value}}</li>
+              </div>
+              <div class="col-6">
+                {% for bonus in ability.bonus %}
+                <li style="list-style-type:none;">{{bonus}}</li>
+                {% endfor %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+    </div>
+    <hr>
+    {% endfor %}
+
+
+    <script>
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/charactersheet/{{id}}/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+
+          if ("att" in data) {
+            document.getElementById(data["att"]).firstElementChild.innerHTML = data['value']
+          }
+          else if ("error" in data) {
+            window.alert(data["error"]);
+          }
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        chatSocket.onopen = function(e) {
+            const message = "hallo";
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+        };
+
+        var increase = function(e) {
+          const el = e.srcElement;
+            chatSocket.send(JSON.stringify({
+              'increase': el.parentElement.previousElementSibling.innerHTML.trim()
+            }));
+        };
+
+        var decrease = function(e) {
+          const el = e.srcElement;
+            chatSocket.send(JSON.stringify({
+              'decrease': el.parentElement.previousElementSibling.innerHTML.trim()
+            }));
+        };
+
+        var elements = document.getElementsByClassName("up");
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].addEventListener('click', increase, false);
+        }
+
+        var elements = document.getElementsByClassName("down");
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].addEventListener('click', decrease, false);
+        }
+    </script>
+</body>
