@@ -10,7 +10,9 @@ import objects.names as names
 import random
 import die.dices as die
 from objects.gender import Gender
-
+import pickle
+import pathlib
+from typing import Union
 
 class SexualOrientation(Enum):
     HOMOSEXUAL = 1
@@ -319,6 +321,31 @@ class Person(object):
         self.__inventory.remove(item)
         # TODO: implement __eq__ for item
 
+    # TODO: alias
+
+    @classmethod
+    def name_to_filename(cls, name: str) -> pathlib.Path:
+        return pathlib.Path(__file__).parent / "people_store" / pathlib.Path(name.replace(" ", "_") + ".pkl")
+
+    
+    def store_to_file(self):
+        fn = Person.name_to_filename(self.name)
+
+        fn.parent.mkdir(parents=True, exist_ok=True)
+
+        with open(fn, 'wb') as fil:
+            pickle.dump(self, fil, pickle.HIGHEST_PROTOCOL)
+
+        print(f"Saved {self.name} in {fn}")
+
+
+def load_person_from_file(filename: Union[pathlib.Path, str]) -> Person:
+    with open(filename, 'rb') as fil:
+        return pickle.load(fil)
+
+def load_person_with_name(name: str) -> Person:
+    fn = Person.name_to_filename(name)
+    return load_person_from_file(fn)
 
 def get_random_person(**kwargs) -> Person:
     def random_char(kwargs: dict, char: str, die: Type(die), rand_fun):
