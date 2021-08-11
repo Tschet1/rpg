@@ -17,26 +17,40 @@ class CharaktersheetConsumer(WebsocketConsumer):
 
         try:
             if "increase" in m_json:
-                att = m_json["increase"]
-                print("Increase " + att)
+                name = m_json["increase"]
+                if name in self.charakter.sheet.attributes:
+                    self.charakter.sheet.attributes[name].increase_value()
+                    val = self.charakter.sheet.attributes[name]
+                elif name in self.charakter.sheet.abilities:
+                    self.charakter.sheet.abilities[name].increase_value()
+                    val = self.charakter.sheet.abilities[name]
+                else:
+                    return
 
-                self.charakter.sheet.attributes[att].increase_value()
+                print("Increase " + name)
                 self.charakter.store_to_file()
 
                 self.send(text_data=json.dumps({
-                    'att': att,
-                    'value': self.charakter.sheet.attributes[att].value
+                    'att': name,
+                    'value': val.value
                 }))
             elif "decrease" in m_json:
-                att = m_json["decrease"]
-                print("Decrease" + att)
+                name = m_json["decrease"]
+                if name in self.charakter.sheet.attributes:
+                    self.charakter.sheet.attributes[name].decrease_value()
+                    val = self.charakter.sheet.attributes[name]
+                elif name in self.charakter.sheet.abilities:
+                    self.charakter.sheet.abilities[name].decrease_value()
+                    val = self.charakter.sheet.abilities[name]
+                else:
+                    return
 
-                self.charakter.sheet.attributes[att].decrease_value()
+                print("Decrease" + name)
                 self.charakter.store_to_file()
 
                 self.send(text_data=json.dumps({
-                    'att': att,
-                    'value': self.charakter.sheet.attributes[att].value
+                    'att': name,
+                    'value': val.value
                 }))
             else:
 
