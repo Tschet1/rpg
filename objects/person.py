@@ -13,6 +13,8 @@ from objects.gender import Gender
 import pickle
 import pathlib
 from typing import Union
+from objects.inventory import Inventory
+from logger import Logger
 
 class SexualOrientation(Enum):
     HOMOSEXUAL = 1
@@ -112,6 +114,7 @@ class Person(object):
                  sexorient: SexualOrientation):
 
         super(Person, self).__init__()
+        self.__logger = Logger(name)
         self.__name = name
         self.__gender = gender
         self.__address = address
@@ -141,6 +144,8 @@ class Person(object):
 
         # TODO: getters / setters
         self.__hp = self.__sheet.max_life
+
+        self.inventory = Inventory(self.__logger)
 
         # TODO:
         # hp/mana usw.
@@ -181,6 +186,7 @@ class Person(object):
     @father.setter
     def father(self, father: Person):
         self.__father = father
+        self.__logger.log(f"set father as {father.name}")
 
     @property
     def mother(self):
@@ -189,6 +195,7 @@ class Person(object):
     @mother.setter
     def mother(self, mother: Person):
         self.__mother = mother
+        self.__logger.log(f"set mother as {mother.name}")
 
     @property
     def spouse(self):
@@ -197,6 +204,7 @@ class Person(object):
     @spouse.setter
     def spouse(self, spouse: Person):
         self.__spouse = spouse
+        self.__logger.log(f"married {spouse.name}")
 
     @property
     def children(self):
@@ -204,6 +212,7 @@ class Person(object):
 
     def add_child(self, child: Person):
         self.__children.append(child)
+        self.__logger.log(f"got child {child.name}")
 
     @property
     def age(self):
@@ -212,6 +221,7 @@ class Person(object):
     @age.setter
     def age(self, age: int):
         self.__age = age
+        self.__logger.log(f"set age to {age}")
 
     @property
     def weapon(self):
@@ -222,6 +232,7 @@ class Person(object):
         if(not isinstance(weapon, Weapon)):
             raise Exception("Tried to equip something that is not a weapon")
         self.__sheet.weapon = weapon
+        self.__logger.log(f"Equiped {weapon.name}")
 
     @property
     def sheet(self):
@@ -235,11 +246,13 @@ class Person(object):
         if not self.__is_alive:
             raise Exception("Already dead")
         self.__is_alive = False
+        self.__logger.log(f"died")
 
     def revive(self):
         if self.__is_alive:
             raise Exception("Already alive")
         self.__is_alive = True
+        self.__logger.log(f"was revived")
 
     @property
     def pets(self):
@@ -247,6 +260,7 @@ class Person(object):
 
     def add_pet(self, animal: Person):
         self.__children.append(animal)
+        self.__logger.log(f"got pet: {animal.name}")
 
     def get_opinion(self, towards: Person):
         opinion = [(opinion.effect, opinion.reason)
@@ -308,17 +322,13 @@ class Person(object):
 
     def add_language(self, language: Language):
         self.__notes.append(language)
-
-    @property
-    def inventroy(self):
-        # TODO: maybe format this
-        return self.__inventroy
+        self.__logger.log(f"speaks not {language}")
 
     def add_to_inventory(self, item: Item):
-        self.__inventory.append(item)
+        self.inventory.add_item(item)
 
     def remove_from_inventory(self, item: Item):
-        self.__inventory.remove(item)
+        self.inventory.remove_item(item)
         # TODO: implement __eq__ for item
 
     # TODO: alias
@@ -340,6 +350,7 @@ class Person(object):
 
 
 def load_person_from_file(filename: Union[pathlib.Path, str]) -> Person:
+    print(f"Load person from {filename}")
     with open(filename, 'rb') as fil:
         return pickle.load(fil)
 

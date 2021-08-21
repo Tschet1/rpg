@@ -74,6 +74,7 @@ class TestCharactersheet(unittest.TestCase):
         c.abilities['Running'].add_bonus(3, "Test")
         c.abilities['Swimming'].add_malus(3, "Test")
 
+        # TODO: fix unit test
         self.assertEqual(c.abilities['Running'].value, 3)
         self.assertEqual(c.abilities['Swimming'].value, -3)
 

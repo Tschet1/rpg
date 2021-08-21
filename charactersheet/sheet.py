@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from abc import ABC, abstractmethod
+from logger import Logger
 
 
 class Bonus(object):
@@ -163,7 +164,9 @@ class Charactersheet(ABC):
     def fight_speed(self):
         return 1
 
-    def __init__(self):
+    def __init__(self, logger: Logger):
+        # TODO: can logger be None?
+        # add baseclass: Loggable
         self._attributes = {}
         self._abilities = {}
         self.level = 0

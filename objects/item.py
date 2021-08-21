@@ -44,6 +44,10 @@ class Item(object):
     def weight(self):
         return self.__weight
 
+    @property
+    def info(self):
+        return ""
+
 
 class Weapon(Item):
     def __init__(self, name: str, value: int, weight: int, related_skill, required_skill: int, damage: Union[die, DieComposition, str], crit_chance: int, crit_mult: int, crit_effect: str, reach: int):

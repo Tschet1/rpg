@@ -24,6 +24,9 @@ def index(request):
     charakter.sheet.Reiten.value = 5
     charakter.sheet.Reiten.add_malus(15, "Klein")
     charakter.sheet.Reiten.add_bonus(5, "Bürger aus Altheim")
+
+    charakter.store_to_file()
+
     return render(request, 'charactersheet/charactersheet.html', context)
 
 def get_person(request, name):
