@@ -80,8 +80,11 @@
         <div class="col-1">
           <b>Wert</b>
         </div>
-        <div class="col-3">
+        <div class="col-2">
           <b>Bonus</b>
+        </div>
+        <div class="col-1">
+          <b>Total</b>
         </div>
         <div class="col-2">
           <b>Fähigkeit</b>
@@ -89,8 +92,11 @@
         <div class="col-1">
           <b>Wert</b>
         </div>
-        <div class="col-3">
+        <div class="col-2">
           <b>Bonus</b>
+        </div>
+        <div class="col-1">
+          <b>Total</b>
         </div>
     </div>
 
@@ -105,10 +111,13 @@
           <div class="up">&#x2191</div>
           <div class="down">&#x2193;</div>
         </div>
-        <div class="col-3">
+        <div class="col-2">
         {% for bonus in attribute.bonus %}
         <li style="list-style-type:none;">{{bonus}}</li>
         {% endfor %}
+        </div>
+        <div class="col-1">
+          <div>{{attribute.total_value}}</div>
         </div>
 
 
@@ -120,19 +129,21 @@
             {% endif %}
 
             <div class="row">
-
               <div class="col-4">
                 {{ability.name}}
               </div>
-  <div class="col-2" id={{ability.name}}>
-          <div>{{ability.value}}</div>
-          <div class="up">&#x2191</div>
-          <div class="down">&#x2193;</div>
+              <div class="col-2" id={{ability.name}}>
+                <div>{{ability.value}}</div>
+                <div class="up">&#x2191</div>
+                <div class="down">&#x2193;</div>
               </div>
-              <div class="col-6">
+              <div class="col-4">
                 {% for bonus in ability.bonus %}
                 <li style="list-style-type:none;">{{bonus}}</li>
                 {% endfor %}
+              </div>
+              <div class="col-2">
+                <div>{{ability.total_value}}</div>
               </div>
             </div>
             {% endfor %}

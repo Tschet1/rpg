@@ -75,27 +75,40 @@ class TestCharactersheet(unittest.TestCase):
         c.abilities['Swimming'].add_malus(3, "Test")
 
         # TODO: fix unit test
-        self.assertEqual(c.abilities['Running'].value, 3)
-        self.assertEqual(c.abilities['Swimming'].value, -3)
+        self.assertEqual(c.abilities['Running'].total_value, 3)
+        self.assertEqual(c.abilities['Swimming'].total_value, -3)
+        self.assertEqual(c.abilities['Running'].bonus_value, 3)
+        self.assertEqual(c.abilities['Swimming'].bonus_value, -3)
+        self.assertEqual(c.abilities['Running'].value, 0)
+        self.assertEqual(c.abilities['Swimming'].value, 0)
 
         with self.assertRaises(ValueError):
             c.abilities['Climbing'].add_bonus(-3, "Test 2")
 
-        self.assertEqual(c.abilities['Climbing'].value, 0)
-
-        with self.assertRaises(ValueError):
-            c.abilities['Climbing'].add_malus(-3, "Test 2")
-
+        self.assertEqual(c.abilities['Climbing'].total_value, 0)
+        self.assertEqual(c.abilities['Climbing'].bonus_value, 0)
         self.assertEqual(c.abilities['Climbing'].value, 0)
 
         c.abilities['Running'].add_bonus(3, "Test")
         c.abilities['Swimming'].add_malus(3, "Test")
 
-        self.assertEqual(c.abilities['Running'].value, 6)
-        self.assertEqual(c.abilities['Swimming'].value, -6)
+        self.assertEqual(c.abilities['Running'].total_value, 6)
+        self.assertEqual(c.abilities['Swimming'].total_value, -6)
+        self.assertEqual(c.abilities['Running'].bonus_value, 6)
+        self.assertEqual(c.abilities['Swimming'].bonus_value, -6)
+        self.assertEqual(c.abilities['Running'].value, 0)
+        self.assertEqual(c.abilities['Swimming'].value, 0)
 
         c.abilities['Swimming'].add_bonus(3, "Test")
-        self.assertEqual(c.abilities['Swimming'].value, -3)
+        self.assertEqual(c.abilities['Swimming'].total_value, -3)
+        self.assertEqual(c.abilities['Swimming'].bonus_value, -3)
+        self.assertEqual(c.abilities['Swimming'].value, 0)
+
+        c.abilities['Swimming'].value = 2
+        self.assertEqual(c.abilities['Swimming'].total_value, -1)
+        self.assertEqual(c.abilities['Swimming'].bonus_value, -3)
+        self.assertEqual(c.abilities['Swimming'].value, 2)
+
 
     def test_internal_objects(self):
         c = mod_system()

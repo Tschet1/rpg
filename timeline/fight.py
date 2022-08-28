@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import bisect
 from timeline.timeline import Timeline, Event
 from objects.person import Person
 from datetime import timedelta

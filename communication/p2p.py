@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 import socket
-import sys
 import time
-import threading
+import multiprocessing
+import atexit
 from requests import get
 
 
@@ -11,17 +11,21 @@ def get_my_ip():
     return get('https://api.ipify.org').text
 
 
-class Server(threading.Thread):
-    def run(self):
+class Server(multiprocessing.Process):
+    PORT= 51712
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(args=args, kwargs=kwargs)
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    def run(self):
         ip = get_my_ip()
         print(f"Server started successfully. IP is {ip}\n")
 
         hostname = ''
-        port = 51712
-        self.sock.bind((hostname, port))
+        self.sock.bind((hostname, self.PORT))
         self.sock.listen(1)
-        print(f"Listening on port {port}\n")
+        print(f"Listening on port {self.PORT}\n")
 
         (clientname, address) = self.sock.accept()
 
@@ -31,8 +35,19 @@ class Server(threading.Thread):
             chunk = clientname.recv(4096)
             print(f"{address}:{chunk}")
 
+    def terminate(self):
+        self.sock.close()
+        super().terminate()
 
-class Client(threading.Thread):
+
+class Client(multiprocessing.Process):
+    def __init__(self, host, port, msgQueue: multiprocessing.Queue, *args, **kwargs):
+        super().__init__(args=args, kwargs=kwargs)
+        self.host = host
+        self.port = port
+        self.queue = msgQueue
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
     def connect(self, host, port):
         self.sock.connect((host, port))
 
@@ -41,37 +56,51 @@ class Client(threading.Thread):
         print("Sent\n")
 
     def run(self):
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        try:
-            host = input("Enter the hostname\n>>")
-            port = int(input("Enter the port\n>>"))
-        except EOFError:
-            print("Error")
-            return 1
-
         print("Connecting\n")
         s = ''
-        self.connect(host, port)
+        self.connect(self.host, self.port)
         print("Connected\n")
         while 1:
             print("Waiting for message\n")
-            msg = input('>>')
+            msg = self.queue.get(True)
             if msg == 'exit':
                 break
             if msg == '':
                 continue
             print("Sending\n")
-            self.client(host, port, msg)
+            self.client(self.host, self.port, msg)
         return(1)
+
+    def terminate(self):
+        self.sock.close()
+        super().terminate()
 
 
 if __name__ == '__main__':
     srv = Server()
-    srv.daemon = True
     print("Starting server")
     srv.start()
     time.sleep(1)
     print("Starting client")
-    cli = Client()
+    try:
+        host = input("Enter the hostname\n>>")
+        port = int(input("Enter the port\n>>"))
+    except EOFError as e:
+        print("Error")
+        print(e)
+
+    queue = multiprocessing.Queue()
+    cli = Client(host=host, port=port, msgQueue=queue)
     print("Started successfully")
     cli.start()
+
+    def __cleanup():
+        print("Terminate")
+        srv.terminate()
+        cli.terminate()
+
+    atexit.register(__cleanup)
+
+    while(True):
+        msg = input('>>')
+        queue.put(msg)

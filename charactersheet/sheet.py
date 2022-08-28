@@ -18,6 +18,9 @@ class Bonus(object):
             return f"+{self.value} ({self.__explanation}) "
         return f"{self.value} ({self.__explanation}) "
 
+    def __int__(self):
+        return self.__value
+
 
 class Characteristic(object):
     def __init__(self, name: str):
@@ -66,6 +69,14 @@ class Characteristic(object):
     @property
     def bonus(self):
         return self.__bonus
+
+    @property
+    def bonus_value(self):
+        return sum([int(b) for b in self.__bonus])
+
+    @property
+    def total_value(self):
+        return self.value + self.bonus_value
 
     def __str__(self):
         return self.name
@@ -164,7 +175,7 @@ class Charactersheet(ABC):
     def fight_speed(self):
         return 1
 
-    def __init__(self, logger: Logger):
+    def __init__(self):
         # TODO: can logger be None?
         # add baseclass: Loggable
         self._attributes = {}
